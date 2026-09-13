@@ -37,5 +37,5 @@
 }
 .img-card-400 {
   width: fit-content;
-  max-height: 100px; /* modified this for my screen */
+  max-height: 400px;
 }
