@@ -45,6 +45,18 @@
               {{ review.date }}
             </h6>
             <p class="card-text">{{ review.comment }}</p>
+            {% if user.is_authenticated and user != review.user %}
+            <form method="POST"
+                        action="{% url 'movies.report_review' id=template_data.movie.id review_id=review.id %}">
+                    {% csrf_token %}
+                    <div class="text-left">
+                      <button type="submit"
+                        class="btn btn-warning">
+                        Report
+                      </button>
+                    </div>
+            </form>
+            {% endif %}
             {% if user.is_authenticated and user == review.user %}
             <a class="btn btn-primary"
               href="{% url 'movies.edit_review' id=template_data.movie.id review_id=review.id %}">
