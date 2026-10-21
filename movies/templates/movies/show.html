@@ -12,6 +12,55 @@
         <p>
           <b>Price:</b> ${{ template_data.movie.price }}
         </p>
+        <div class="mb-3" id="average-rating">
+          <b>Average rating:</b>
+          <span class="star-display"
+            aria-label="Average {{ template_data.rating_average|floatformat:1|default:'0' }} out of 5 stars">
+            {% for s in template_data.average_stars %}
+              {% if s == 'full' %}<i class="fa-solid fa-star"></i>
+              {% elif s == 'half' %}<i class="fa-solid fa-star-half-stroke"></i>
+              {% else %}<i class="fa-regular fa-star"></i>{% endif %}
+            {% endfor %}
+          </span>
+          {% if template_data.rating_count %}
+            <span class="ms-1">{{ template_data.rating_average|floatformat:1 }} / 5</span>
+            <span class="text-muted">({{ template_data.rating_count }} rating{{ template_data.rating_count|pluralize }})</span>
+          {% else %}
+            <span class="text-muted ms-1">No ratings yet</span>
+          {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+        <form method="POST" class="mb-3" id="rate-form"
+          action="{% url 'movies.rate' id=template_data.movie.id %}">
+          {% csrf_token %}
+          <b>Your rating:</b>
+          <fieldset class="star-input">
+            <legend class="visually-hidden">Your rating</legend>
+            {% for n in "54321" %}
+            <input type="radio" id="star{{ n }}" name="stars" value="{{ n }}" required
+              {% if template_data.user_stars|stringformat:"d" == n %}checked{% endif %}>
+            <label for="star{{ n }}" title="{{ n }} star{{ n|pluralize }}"><i class="fa-solid fa-star"></i></label>
+            {% endfor %}
+          </fieldset>
+          <button type="submit" class="btn btn-sm bg-dark text-white">
+            {% if template_data.user_stars %}Update rating{% else %}Submit rating{% endif %}
+          </button>
+          {% if template_data.user_stars %}
+          <div class="text-muted small mt-1">You rated this {{ template_data.user_stars }} / 5</div>
+          {% endif %}
+        </form>
+        {% else %}
+        <p class="text-muted"><a href="{% url 'accounts.login' %}">Log in</a> to rate this movie.</p>
+        {% endif %}
+        <style>
+          .star-display { color: #f5b301; font-size: 1.3rem; }
+          .star-input { display: inline-flex; flex-direction: row-reverse; border: 0; margin: 0 .5rem; padding: 0; vertical-align: middle; }
+          .star-input input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+          .star-input label { color: #ccc; font-size: 1.6rem; cursor: pointer; padding: 0 2px; }
+          .star-input input:checked ~ label,
+          .star-input label:hover, .star-input label:hover ~ label { color: #f5b301; }
+          .star-input input:focus-visible + label { outline: 2px solid #0d6efd; border-radius: 4px; }
+        </style>
         <p class="card-text">
           <form method="post"
             action="{% url 'cart.add' id=template_data.movie.id %}">
