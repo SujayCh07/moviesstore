@@ -1,0 +1,35 @@
+{% extends 'admin/base_site.html' %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+  &rsaquo; Top Buyer
+</div>
+{% endblock %}
+{% block content %}
+<div id="content-main">
+  {% if top_buyers %}
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">User</th>
+        <th scope="col">Movies Bought</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for buyer in top_buyers %}
+      <tr>
+        <td>{{ buyer.username }}</td>
+        <td>{{ movies_bought }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if top_buyers|length > 1 %}
+  <p>These users are tied for the most movies bought.</p>
+  {% endif %}
+  {% else %}
+  <p>No movies have been bought yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
