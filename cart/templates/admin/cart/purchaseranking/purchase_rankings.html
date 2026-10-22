@@ -1,0 +1,42 @@
+{% extends 'admin/base_site.html' %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+  &rsaquo; Purchase Rankings
+</div>
+{% endblock %}
+{% block content %}
+<div id="content-main">
+  <form method="get">
+    {{ form.limit.errors }}
+    <label for="{{ form.limit.id_for_label }}">{{ form.limit.label }}:</label>
+    {{ form.limit }}
+    <input type="submit" value="Apply">
+    <a href="?">Show all</a>
+  </form>
+  <p>Showing {{ rankings|length }} of {{ total_users }} users.</p>
+  {% if rankings %}
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Rank</th>
+        <th scope="col">User</th>
+        <th scope="col">Movies Bought</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ranking in rankings %}
+      <tr>
+        <td>{{ ranking.rank }}</td>
+        <td>{{ ranking.username }}</td>
+        <td>{{ ranking.movies_bought }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>There are no users yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
