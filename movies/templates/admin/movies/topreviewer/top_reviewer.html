@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo;
+    <a href="{% url 'admin:app_list' app_label=opts.app_label %}">
+        {{ opts.app_config.verbose_name }}
+    </a>
+    &rsaquo; Top Reviewer
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>User with the Most Comments</h1>
+
+    {% if top_reviewers %}
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Comment Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reviewer in top_reviewers %}
+            <tr>
+                <td>{{ reviewer.username }}</td>
+                <td>{{ comment_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No comments have been posted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

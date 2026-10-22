@@ -34,3 +34,10 @@ class Rating(models.Model):
             fields=['movie', 'user'], name='one_rating_per_user_per_movie')]
     def __str__(self):
         return str(self.id) + ' - ' + self.movie.name + ' - ' + str(self.stars)
+
+
+class TopReviewer(User):
+    class Meta:
+        proxy = True
+        verbose_name = "Top Reviewer"
+        verbose_name_plural = "Top Reviewer"
