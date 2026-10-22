@@ -41,10 +41,3 @@ class TopReviewer(User):
         proxy = True
         verbose_name = "Top Reviewer"
         verbose_name_plural = "Top Reviewer"
-
-
-class MovieLeaders(Movie):
-    class Meta:
-        proxy = True
-        verbose_name = "Movie Leaders"
-        verbose_name_plural = "Movie Leaders"
