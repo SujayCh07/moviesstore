@@ -28,3 +28,9 @@ class TopBuyer(User):
         proxy = True
         verbose_name = 'Top Buyer'
         verbose_name_plural = 'Top Buyer'
+
+class PurchaseRanking(User):
+    class Meta:
+        proxy = True
+        verbose_name = 'Purchase Ranking'
+        verbose_name_plural = 'Purchase Rankings'
